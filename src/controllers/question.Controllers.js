@@ -1,29 +1,57 @@
 import Survey from '../database/models/survey.Model.js'
 
 
-export const createQuestion = async (req,res) => {
-    
-    let {titulo, tipo} = req.body;
+export const updateQuestion = async (req,res) => {
 
-    let {idSurvey} = req.params;
+    let {question, type, possibleAnswers} = req.body;
+    let {userId} = req.userToken
+    let {idSurvey,idQuestion} = req.params;
 
-    let question = {
-        titulo : titulo,
-        tipo : tipo,
-        answers : []
+    let newQuestion = {
+        question : question,
+        type : type,
+        possibleAnswers : possibleAnswers,
+        userAnswers : []
     }
 
    try
    {
-    let surveyUpdated =  await Survey.findById(idSurvey)
+    let surveyUpdated =  await Survey.findById(idSurvey);
 
-    surveyUpdated.preguntas.push(question);
+    console.log(surveyUpdated);
+
+    if(!surveyUpdated)
+    {
+        return res.status(400).json({message:'no existe una encuesta con ese id'})
+    }
+
+    if(surveyUpdated.idAuthor != userId)
+    {
+        return res.status(403).json({message:'permission denied'})
+    }
+
     
-    let questionCreated = surveyUpdated.preguntas[surveyUpdated.preguntas.length-1];
+    let questionUpdate = await surveyUpdated.surveyQuestions.find( question => question._id == idQuestion);
+
+    if(!questionUpdate)
+    {
+        return res.status(400).json({message:'no existe una pregunta con ese id'})
+    }
+
+    if(questionUpdate.userAnswers.length > 0)
+    {   
+        return res.status(403).json({message:'no se puede actualizar una pregunta que ya tiene respuestas'});
+    }
+
+    questionUpdate.question = newQuestion.question;
+    questionUpdate.type = newQuestion.type;
+    questionUpdate.possibleAnswers = newQuestion.possibleAnswers;
 
     await surveyUpdated.save();
+    
 
-    res.json(questionCreated);
+    res.json(questionUpdate);
+
    }
    catch(error)
    {

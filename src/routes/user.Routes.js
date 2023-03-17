@@ -1,4 +1,3 @@
-
 import { Router } from "express";
 import {
   getAllUsers,
@@ -8,7 +7,7 @@ import {
   updateUser,
   updateUserPassword
 } from "../controllers/user.Controllers.js";
-import { verifyToken } from "../validateToken.js";
+import { verifyToken } from "../helpers/validateToken.js";
 
 const router = Router();
 
