@@ -13,3 +13,5 @@ export const verifyToken = (req, res, next) => {
         res.status(400).json({error: 'token no es válido'})
     }
 }
+
+
