@@ -17,24 +17,17 @@ const schemaUpdatePassword = Joi.object({
 })
 
 export const validateCreateUser = (userBody) =>{
-    
     const { error } = schemaCreateUser.validate(userBody);
-
     return error;
-
 }
 
-export const validateUpdateUser = (userBody) =>{
-    
+export const validateUpdateUser = (userBody) =>{ 
     const { error } = schemaUpdateUser.validate(userBody);
-
     return error;
 }
 
-export const validateUpdatePassword = (userBody) =>{
-    
+export const validateUpdatePassword = (userBody) =>{   
     const { error } = schemaUpdatePassword.validate(userBody);
-
     return error;
 }
 

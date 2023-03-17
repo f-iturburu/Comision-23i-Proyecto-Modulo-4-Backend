@@ -338,8 +338,7 @@ export const updateSurveyCategories = async (req, res) =>
             categories : surveyById.categories
         })
     }
-    catch(error)
-    {
+    catch(error){
         return res.status(500).json({message:error.message});
     }
 
@@ -350,31 +349,25 @@ export const updateSurveyEndDate = async (req,res) => {
     let {userId, userRole} = req.userToken;
     let {endDate} = req.body;
 
-    try
-    {
+    try{
         const surveyById = await Survey.findById(id);
 
-        if(!surveyById)
-        {
+        if(!surveyById){
             return res.status(400).json({message:'no existe'});
         }
 
-        if(userId != surveyById.idAuthor && userRole !== 0)
-        {
+        if(userId != surveyById.idAuthor && userRole !== 0){
             return res.status(403).json({message:'permission denied'}); 
         }
 
         surveyById.endDate = endDate;
-
         await surveyById.save();
-
         res.json({
             _id : surveyById._id,
             endDate : surveyById.endDate
         })
     }
-    catch(error)
-    {
+    catch(error){
         return res.status(500).json({message:error.message});
     }
 }
