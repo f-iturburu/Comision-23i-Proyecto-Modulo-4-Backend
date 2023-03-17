@@ -1,16 +1,16 @@
 
-import { connect } from "mongoose";
+import mongoose from "mongoose";
+import { CONNECTION_STRING } from "../config.js";
 
-(async () => {
-    try
-    {
-        // !DATOS DE LA BASE DE DATOS PASARLOS A VARIABLES DE ENTORNO
-        const db = await connect('mongodb://localhost:27017/RegistroDb');
-        console.log('DB connected to',db.connection.name);
-    }
-    catch(error)
-    {
-        console.log("Error!!!!");
-        console.log(error);
-    }
-})();
+console.log(CONNECTION_STRING);
+
+mongoose.connect(CONNECTION_STRING);
+
+// Manejar los eventos de conexión y error
+mongoose.connection.on('connected', () => {
+  console.log('Conectado a la base de datos de MongoDB');
+});
+
+mongoose.connection.on('error', (err) => {
+  console.error(`Error de conexión a la base de datos de MongoDB: ${err}`);
+});

@@ -1,7 +1,11 @@
-export const PORT = process.env.PORT || 3000;
+import dotenv from 'dotenv'
+
+dotenv.config();
+
+export const PORT = process.env.PORT || 4000;
 export const TOKEN_SECRET = process.env.SECRET || 'ASÑLDKASKLÑFJLSAKDFKLSAFfsadñlfasd213423f';
-// export const DB_HOST = process.env.DB_HOST || 'localhost';
-// export const DB_USER = process.env.DB_USER || 'root';
-// export const DB_PASS = process.env.DB_PASS|| 'root';
-// export const DB_NAME = process.env.DB_NAME || 'usersDB';
-// export const DB_PORT = process.env.DB_PORT || 3307;
+export const CONNECTION_STRING = process.env.CONNECTION_STRING || 'mongodb://localhost:27017/RegistroDb';
+
+export const ADMIN_USER = process.env.ADMIN_USER || 'admin';
+export const ADMIN_PASS = process.env.ADMIN_PASS || 'admin1234.';
+export const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@admin.com';

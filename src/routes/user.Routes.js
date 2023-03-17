@@ -7,7 +7,7 @@ import {
   updateUser,
   updateUserPassword
 } from "../controllers/user.Controllers.js";
-import { verifyToken } from "../validateToken.js";
+import { verifyToken } from "../helpers/validateToken.js";
 
 const router = Router();
 

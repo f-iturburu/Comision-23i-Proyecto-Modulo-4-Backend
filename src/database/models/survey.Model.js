@@ -1,20 +1,29 @@
 import {Schema, model} from 'mongoose';
 
+
+
+const answer = new Schema({
+  userId: String,
+  userAnswer: Array,
+  isAnonymous: Boolean
+})
+
+const question = new Schema({
+    question: {type:String, lowercase:true, trim:true},
+    type: String,
+    possibleAnswers: Array,
+    userAnswers: [answer]
+})
+
 const survey = new Schema({
-  nombre: String,
-  estado: Boolean,
-  preguntas: [{
-                titulo: String,
-                tipo: String,
-                answers: [{
-                            idUser: String,
-                            userAnswer: String,
-                          }]
-              }],
-  categoria: String,
-  idAuthor : String
+  name: {type:String, lowercase:true, trim:true},
+  published: Boolean,
+  surveyQuestions:[question],
+  categories: Array,
+  idAuthor : String,
+  endDate: Date,
 },{
-    timestamps:false
+    timestamps:true
 });
 
 export default model('Survey', survey);
