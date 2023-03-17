@@ -1,12 +1,12 @@
 import {Schema, model} from 'mongoose';
 
 const user = new Schema({
-  nombre: String,
-  email: String,
+  username: {type:String, lowercase:true, trim:true},
+  email: {type:String, lowercase:true, trim:true},
   password: String,
-  rol: Number
+  role: Number
 },{
-    timestamps:false
+    timestamps:true
 });
 
 // User rol  0:Admin, 1:User normal

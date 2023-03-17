@@ -1,13 +1,13 @@
 import { Router } from "express";
 import {
-  createQuestion
+  updateQuestion
 } from "../controllers/question.Controllers.js";
-import { verifyToken } from "../validateToken.js";
+import { verifyToken } from "../helpers/validateToken.js";
 
 const router = Router();
 
 
-router.post("/question/:idSurvey", verifyToken, createQuestion);
+router.put("/question/:idQuestion/survey/:idSurvey", verifyToken, updateQuestion);
 
 
 export default router;
