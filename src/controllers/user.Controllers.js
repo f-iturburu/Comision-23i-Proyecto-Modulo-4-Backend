@@ -41,53 +41,54 @@ export const createUser = async (req,res) =>{
         return res.status(400).json({message:error.details[0].message});
     }
 
-    try{
-        const isEmailExist = await User.findOne({ email: email});
-        if (isEmailExist) 
-            return res.status(400).json({error: 'Email ya registrado'})
+        try{
+            const emailFound = await User.findOne({ email: email});
+            if (emailFound){
+                return res.status(400).json({error: 'Email ya registrado'})
+            } 
+            const usernameFound = await User.findOne({ username: username });
+                if (usernameFound){
+                    return res.status(400).json({error: 'Username ya registrado'})
+                } 
+    
+            const salt = await bcrypt.genSalt(10);
+            const passwordHashed = await bcrypt.hash(password, salt);
+            const newUser = await User.create({username:username,password:passwordHashed,email:email,role:1});
 
-        const isUsernameExist = await User.findOne({ username: username });
-            if (isUsernameExist) 
-                return res.status(400).json({error: 'Username ya registrado'})
+            res.status(201).json({_id: newUser._id})
 
-        const salt = await bcrypt.genSalt(10);
-        const passwordHashed = await bcrypt.hash(password, salt);
+        }catch(error){
+            return res.status(500).json({message:error.message});    
+        }
 
-        const newUser = await User.create({username:username,password:passwordHashed,email:email,role:1});
+    
 
-        res.json(newUser);
-
-    }catch(error){
-        return res.status(500).json({message:error.message});    
-    }
 }
-
-export const getUserById = async (req,res) => {
-    let {id} = req.params;
-    try
-    {
-        const users = await User.findById(id);
-        res.json(users);
+ 
+export const getMyUser = async (req,res) =>{
+    let {userId} = req.userToken
+    try{
+        let user = await User.findById(userId);
+        res.json(user);
     }
-    catch(error)
-    {
+    catch(error){
         return res.status(500).json({message:error.message});
     }
 }
 
 export const login = async (req,res) => {
-
     let {user,password} = req.body;
     let userLogin = await User.findOne({$or:[{username:user},{email:user}]});
 
-    if(!userLogin)
-    {   
+    if(!userLogin){   
         return res.status(404).json({message:'nombre de usuario o email incorrectos'}); 
     }
                 
     const validPassword = await bcrypt.compare(password, userLogin.password);
-    if (!validPassword) 
-        return res.status(400).json({ error: 'Contraseña inválida!!!' })
+
+    if (!validPassword){
+        return res.status(400).json({ error: 'Contraseña inválida' })
+    } 
 
     const token = jwt.sign({
             userId: userLogin._id,
@@ -99,92 +100,70 @@ export const login = async (req,res) => {
 
 }
 
-export const updateUser = async (req,res) => {
-
-    let {username, email} = req.body;
+export const updateUsername = async (req,res) => {
+    let {username} = req.body;
+    let {userId} = req.userToken;
     let error = validateUpdateUser({
         username:username,
-        email:email
     });
-    if(error) {
+
+    if(error){
         return res.status(400).json({message:error.details[0].message});
     }
 
-    let tokenUser = req.userToken;
-    
-   try
-   {
+   try{
     let usernameExists = await User.findOne({
         $and: [
             {username: username},
-            {_id: {$ne:tokenUser.userId}}
+            {_id: {$ne:userId}}
         ] 
     });
-    
-    if(usernameExists)
-    {
+
+    if(usernameExists){
         return res.status(400).json({ error: 'El username ya esta en uso' })
     }
 
-    let emailExists = await User.findOne({  
-        email: email,
-        _id: {$ne:tokenUser.userId}
-    });
-
-    if(emailExists)
-    {
-        return res.status(400).json({ error: 'El email ya esta en uso' })
-    }
-
-    let userUpdated = await User.findById(tokenUser.userId);
-
+    let userUpdated = await User.findById(userId);
     userUpdated.username = username;
-    userUpdated.email = email;
-
     await userUpdated.save();
     res.json(userUpdated);
-   }
-   catch(error)
-   {
+
+   }catch(error) {
     return res.status(500).json({ error: error.message })
    }
 }
 
 export const updateUserPassword = async (req,res) => {
     let {oldPassword, newPassword} = req.body;
-
-    let tokenUser = req.userToken;
+    let {userId} = req.userToken;
     
-   try
-   {
-    let userUpdated = await User.findById(tokenUser.userId);
-
+   try{
+    let userUpdated = await User.findById(userId);
     const validPassword = await bcrypt.compare(oldPassword, userUpdated.password);
-    if (!validPassword)
-    {
+
+    if (!validPassword){
         return res.status(400).json({ error: 'Contraseña antigua incorrecta' })
     } 
-    
+
     let error = validateUpdatePassword({
         password:password
     });
 
-    if(error) 
-    {
+    if(error) {
         return res.status(400).json({message:error.details[0].message});
     }
 
     const salt = await bcrypt.genSalt(10);
     const passwordHashed = await bcrypt.hash(newPassword, salt);
-
     userUpdated.password = passwordHashed;
-
     await userUpdated.save();
+    res.json({_id:userUpdated._id});
 
-    res.json(userUpdated);
-   }
-   catch(error)
-   {
+   }catch(error){
     return res.status(500).json({ error: error.message })
    }
 }
+
+
+
+

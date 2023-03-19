@@ -4,7 +4,6 @@ import cors from 'cors';
 // Export las diferentes rutas
 import UserRoutes from './routes/user.Routes.js';
 import SurveyRoutes from './routes/survey.Routes.js';
-import QuestionRoutes from './routes/question.Routes.js';
 import AnswerRoutes from './routes/answer.Routes.js';
 
 const app = express();
@@ -22,7 +21,6 @@ app.use(express.json());
 // Uso de las rutas exportadas
 app.use(UserRoutes);
 app.use(SurveyRoutes);
-app.use(QuestionRoutes);
 app.use(AnswerRoutes);
 
 export default app;

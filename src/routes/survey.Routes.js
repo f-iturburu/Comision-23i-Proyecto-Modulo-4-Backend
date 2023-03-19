@@ -1,15 +1,14 @@
 import { Router } from "express";
 import {
     getSurveyById,
-    createSurvey,
     getAllSurveys,
     getSurveyByIdWithMyAnswers,
     getAllMySurveys,
     getAllSurveysActive,
     createSurveyWithQuestions,
     updateSurveyPublished,
-    updateSurveyCategories,
-    updateSurveyEndDate
+    deleteSurvey
+
 } from "../controllers/survey.Controllers.js";
 import { verifyToken } from "../helpers/validateToken.js";
 
@@ -21,11 +20,10 @@ router.get("/surveys", verifyToken, getAllMySurveys)
 router.get("/survey/:id/answers/me", verifyToken, getSurveyByIdWithMyAnswers);
 router.get("/surveys/active", getAllSurveysActive)
 
-router.post("/survey", verifyToken, createSurvey)
-router.post("/survey/question", verifyToken, createSurveyWithQuestions)
 
+router.post("/survey/question", verifyToken, createSurveyWithQuestions)
 router.patch("/survey/:id/published", verifyToken, updateSurveyPublished)
-router.patch("/survey/:id/categories", verifyToken, updateSurveyCategories)
-router.patch("/survey/:id/date", verifyToken, updateSurveyEndDate)
+router.delete("/survey/:id", verifyToken, deleteSurvey)
+
 
 export default router;
