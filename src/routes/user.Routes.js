@@ -2,9 +2,9 @@ import { Router } from "express";
 import {
   getAllUsers,
   createUser,
-  getUserById,
+  getMyUser,
   login,
-  updateUser,
+  updateUsername,
   updateUserPassword
 } from "../controllers/user.Controllers.js";
 import { verifyToken } from "../helpers/validateToken.js";
@@ -12,11 +12,11 @@ import { verifyToken } from "../helpers/validateToken.js";
 const router = Router();
 
 
-router.get("/user", verifyToken,getAllUsers);
+router.get("/users", verifyToken,getAllUsers);
 router.post("/user", createUser);
-router.get("/user/:id", verifyToken,getUserById);
+router.get("/user", verifyToken,getMyUser);
 router.post("/login", login);
-router.put("/user", verifyToken,updateUser)
-router.patch("/user", verifyToken, updateUserPassword)
+router.patch("/user/username", verifyToken,updateUsername)
+router.patch("/user/password", verifyToken, updateUserPassword)
 
 export default router;

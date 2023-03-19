@@ -9,7 +9,6 @@ const schemaCreateUser = Joi.object({
 
 const schemaUpdateUser = Joi.object({
     username: Joi.string().min(6).max(25).required(),
-    email: Joi.string().min(6).max(25).required().email(),
 })
 
 const schemaUpdatePassword = Joi.object({ 

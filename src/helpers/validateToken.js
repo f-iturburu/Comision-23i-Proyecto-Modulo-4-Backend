@@ -6,7 +6,7 @@ export const verifyToken = (req, res, next) => {
     const token = req.header('auth-token')
     if (!token) return res.status(401).json({ error: 'Acceso denegado' })
     try {
-        const verified = jwt.verify(token, TOKEN_SECRET, { expiresIn: '3h' });
+        const verified = jwt.verify(token, TOKEN_SECRET);
         req.userToken = verified
         next() // continuamos
     } catch (error) {
