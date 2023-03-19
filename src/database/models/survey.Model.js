@@ -1,7 +1,5 @@
 import {Schema, model} from 'mongoose';
 
-
-
 const answer = new Schema({
   userId: String,
   userAnswer: Array,
