@@ -3,6 +3,8 @@ import User from '../database/models/user.Model.js'
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { TOKEN_SECRET } from '../config.js';
+import { LOGIN_ADMIN_TOKEN } from '../config.js';
+import { LOGIN_USER_TOKEN } from '../config.js';
 import {validateCreateUser,
         validateUpdateUser,
         validateUpdatePassword} 
@@ -93,9 +95,9 @@ export const login = async (req,res) => {
     let roleToken ;
 
     if (userLogin.role == 0) {
-        roleToken = '97ef6616832542a88d5a4aecf9528234'
+        roleToken = LOGIN_ADMIN_TOKEN
     }else{
-        roleToken = '4ff5692f896141e1ba7b71017b2842ba'
+        roleToken = LOGIN_USER_TOKEN
     }
     const token = jwt.sign({
             userId: userLogin._id,
