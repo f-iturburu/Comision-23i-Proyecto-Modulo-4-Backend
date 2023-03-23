@@ -15,6 +15,7 @@ const question = new Schema({
 
 const survey = new Schema({
   name: {type:String, lowercase:true, trim:true},
+  description: String,
   published: Boolean,
   surveyQuestions:[question],
   categories: Array,
