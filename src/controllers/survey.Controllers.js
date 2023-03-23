@@ -4,12 +4,13 @@ import User from '../database/models/user.Model.js';
 
 export const createSurveyWithQuestions = async (req,res) => {
 
-    let {name, endDate, categories, questions} = req.body;
+    let {name, endDate, categories, questions, description} = req.body;
     let {userId} = req.userToken;
 
     try{
         const survey = await Survey.create({
             name: name,
+            description: description, 
             published: true, 
             idAuthor: userId,
             endDate: endDate,
@@ -83,7 +84,8 @@ export const getSurveyById = async (req,res) =>{
         res.json({
             _id : surveyById._id,
             name : surveyById.name,
-            published : surveyById.punlished,
+            description: surveyById.description, 
+            published : surveyById.published,
             categories : surveyById.categories,
             idAuthor : surveyById.idAuthor,
             endDate : surveyById.endDate,
@@ -95,7 +97,6 @@ export const getSurveyById = async (req,res) =>{
         return res.status(500).json({message:error.message});    
     }
 }
-
 // !EXCLUSIVA DEL USER ADMIN
 export const getAllSurveys = async (req,res) => {
 
@@ -140,6 +141,7 @@ export const getAllSurveysActive = async (req, res) =>{
             return {
                 _id: survey._id,
                 name: survey.name,
+                description: survey.description, 
                 endDate: survey.endDate,
                 categories: survey.categories,
             }
@@ -159,6 +161,7 @@ export const getAllMySurveys = async (req, res) =>{
         let surveysResponse =  surveys.map(survey => {
             return { _id: survey._id,
                      name: survey.name,
+                     description : survey.description,
                      published: survey.published,
                      categories: survey.categories,
                      endDate: survey.endDate,
