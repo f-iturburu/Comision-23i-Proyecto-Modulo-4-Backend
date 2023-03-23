@@ -90,13 +90,20 @@ export const login = async (req,res) => {
         return res.status(400).json({ message: 'Contraseña inválida' })
     } 
 
+    let roleToken ;
+
+    if (userLogin.role == 0) {
+        roleToken = '97ef6616832542a88d5a4aecf9528234'
+    }else{
+        roleToken = '4ff5692f896141e1ba7b71017b2842ba'
+    }
     const token = jwt.sign({
             userId: userLogin._id,
             userRole: userLogin.role,
             userEmail: userLogin.email
         }, TOKEN_SECRET)
         
-    res.json({token:token})
+    res.json({token:token, role: roleToken})
 
 }
 

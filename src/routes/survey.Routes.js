@@ -18,11 +18,11 @@ router.get("/survey/:id", verifyToken, getSurveyById)
 router.get("/survey", verifyToken, getAllSurveys)
 router.get("/surveys", verifyToken, getAllMySurveys)
 router.get("/survey/:id/answers/me", verifyToken, getSurveyByIdWithMyAnswers);
+
 router.post("/surveys/active", getAllSurveysActive)
-
-
 router.post("/survey/question", verifyToken, createSurveyWithQuestions)
 router.patch("/survey/:id/published", verifyToken, updateSurveyPublished)
+
 router.delete("/survey/:id", verifyToken, deleteSurvey)
 
 
