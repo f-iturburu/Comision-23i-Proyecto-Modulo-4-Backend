@@ -88,6 +88,7 @@ export const getSurveyById = async (req,res) =>{
             published : surveyById.published,
             categories : surveyById.categories,
             idAuthor : surveyById.idAuthor,
+            createDate: survey.createdAt,
             endDate : surveyById.endDate,
             surveyQuestions : questionsResponse
         });
