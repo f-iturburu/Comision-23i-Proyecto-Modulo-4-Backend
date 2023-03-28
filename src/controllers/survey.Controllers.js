@@ -154,7 +154,6 @@ export const getAllSurveysActive = async (req, res) =>{
 
 export const getAllMySurveys = async (req, res) =>{
     let {userId} = req.userToken;
-
     try{
         const surveys = await Survey.find({idAuthor : userId});
         
@@ -164,6 +163,7 @@ export const getAllMySurveys = async (req, res) =>{
                      description : survey.description,
                      published: survey.published,
                      categories: survey.categories,
+                     createDate: survey.createdAt,
                      endDate: survey.endDate,
                    }
         });
