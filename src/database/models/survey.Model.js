@@ -4,7 +4,8 @@ const answer = new Schema({
   userId: String,
   userAnswer: Array,
   isAnonymous: Boolean,
-  answerDate: String
+},{
+  timestamps:true
 })
 
 const question = new Schema({
