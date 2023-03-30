@@ -50,7 +50,7 @@ export const createUser = async (req,res) =>{
             } 
             const usernameFound = await User.findOne({ username: username });
                 if (usernameFound){
-                    return res.status(400).json({error: 'Username ya registrado'})
+                    return res.status(401).json({error: 'Username ya registrado'})
                 } 
     
             const salt = await bcrypt.genSalt(10);
