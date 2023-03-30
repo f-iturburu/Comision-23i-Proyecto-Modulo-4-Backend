@@ -5,7 +5,7 @@ const schemaValidateUsername = Joi.object({
     .min(6)
     .max(15)
     .required()
-    .pattern(/^[A-Za-z]+$/)
+    .pattern(/^[A-Za-z0-9]+$/)
     .messages({'string.min': "El nombre de usuario ingresado es demasiado corto",
                'string.max': "El nombre de usuario ingresado es demasiado largo",
                'string.pattern.base':"El nombre de usuario ingresado es invalido",

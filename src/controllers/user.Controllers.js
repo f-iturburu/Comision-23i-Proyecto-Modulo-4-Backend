@@ -52,7 +52,20 @@ export const createUser = async (req,res) =>{
             const passwordHashed = await bcrypt.hash(password, salt);
             const newUser = await User.create({username:username,password:passwordHashed,email:email,role:1});
 
-            res.status(201).json({_id: newUser._id})
+            let roleToken ;
+
+            if (newUser.role == 0) {
+                roleToken = LOGIN_ADMIN_TOKEN
+            }else{
+                roleToken = LOGIN_USER_TOKEN
+            }
+            const token = jwt.sign({
+                    userId: newUser._id,
+                    userRole: newUser.role,
+                    userEmail: newUser.email
+                }, TOKEN_SECRET)
+
+            res.status(201).json({token:token, role: roleToken})
 
         }catch(error){
             return res.status(500).json({message:error.message});    
