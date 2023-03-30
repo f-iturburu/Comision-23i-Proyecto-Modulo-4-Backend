@@ -1,4 +1,3 @@
-
 import User from '../database/models/user.Model.js'
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -174,6 +173,7 @@ export const updateUserPassword = async (req,res) => {
     return res.status(500).json({ error: error.message })
    }
 }
+
 
 
 
