@@ -39,17 +39,6 @@ const schemaValidatePassword = Joi.object({
       'string.empty': "Debes ingresar una contraseña"
     }),
 });
-const schemaUpdateUser = Joi.object({
-  username: Joi.string().min(6).max(25).required(),
-});
-
-const schemaUpdatePassword = Joi.object({
-  password: Joi.string()
-    .min(6)
-    .max(30)
-    .required()
-    .regex(/"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"/),
-});
 
 export const validateUsername = (username) => {
   const { error } = schemaValidateUsername.validate(username);
