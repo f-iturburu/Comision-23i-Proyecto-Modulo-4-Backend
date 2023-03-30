@@ -7,7 +7,7 @@ import { LOGIN_ADMIN_TOKEN } from '../config.js';
 import { LOGIN_USER_TOKEN } from '../config.js';
 import {validateCreateUser,
         validateUpdateUser,
-        validateUpdatePassword} 
+        validateUpdatePassword, validateEmail, validatePassword,validateUsername} 
 from '../helpers/userValidations.js';
 
 export const getAllUsers = async (req,res) => {
@@ -39,18 +39,22 @@ export const createUser = async (req,res) =>{
             password:password,
             email:email
         });
-    if(error) {
+
+        let errorUsername = validateUsername({username:username})
+        let errorPassword = validatePassword({password:password})
+        let errorEmail = validateEmail({email:email})
+
+    if(errorUsername || errorPassword || errorEmail) {
         return res.status(400).json({message:error.details[0].message});
     }
-
         try{
             const emailFound = await User.findOne({ email: email});
             if (emailFound){
-                return res.status(400).json({error: 'Email ya registrado'})
+                return res.status(400).json({message: 'Email ya registrado'})
             } 
             const usernameFound = await User.findOne({ username: username });
                 if (usernameFound){
-                    return res.status(400).json({error: 'Username ya registrado'})
+                    return res.status(401).json({message: 'Username ya registrado'})
                 } 
     
             const salt = await bcrypt.genSalt(10);
