@@ -61,7 +61,8 @@ export const getSurveyById = async (req,res) =>{
                     answerRes = {
                         userAnswer: currentAnswer.userAnswer,
                         _id: currentAnswer._id,
-                        user: 'Anonymous'
+                        user: 'Anonymous',
+                        answerDate: currentAnswer.createdAt
                     };
                 } else {
                     answerRes = {
