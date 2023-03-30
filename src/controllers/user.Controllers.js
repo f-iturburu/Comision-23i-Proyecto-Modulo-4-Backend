@@ -1,4 +1,3 @@
-
 import User from '../database/models/user.Model.js'
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -37,7 +36,7 @@ export const createUser = async (req,res) =>{
         let errorPassword = validatePassword({password:password})
 
     if(errorUsername || errorPassword || errorEmail) {
-        return res.status(400).json({message: errorUsername ?? errorEmail ?? errorPassword});
+        return res.status(401).json({message: errorUsername ?? errorEmail ?? errorPassword});
     }
         try{
             const emailFound = await User.findOne({ email: email});
@@ -174,6 +173,7 @@ export const updateUserPassword = async (req,res) => {
     return res.status(500).json({ error: error.message })
    }
 }
+
 
 
 
