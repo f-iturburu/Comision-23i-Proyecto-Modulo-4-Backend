@@ -67,7 +67,8 @@ export const getSurveyById = async (req,res) =>{
                     answerRes = {
                         userAnswer: currentAnswer.userAnswer,
                         _id: currentAnswer._id,
-                        user: { username: user.username, email: user.email, _id: user._id }
+                        user: { username: user.username, email: user.email, _id: user._id },
+                        answerDate: currentAnswer.createdAt
                     };
                 }
                 answerResponse.push(answerRes);
