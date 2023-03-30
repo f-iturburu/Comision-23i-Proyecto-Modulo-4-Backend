@@ -5,8 +5,7 @@ import jwt from 'jsonwebtoken';
 import { TOKEN_SECRET } from '../config.js';
 import { LOGIN_ADMIN_TOKEN } from '../config.js';
 import { LOGIN_USER_TOKEN } from '../config.js';
-import {validateUpdateUser,
-        validateUpdatePassword, validateEmail, validatePassword,validateUsername} 
+import {validateEmail, validatePassword,validateUsername} 
 from '../helpers/userValidations.js';
 
 export const getAllUsers = async (req,res) => {
