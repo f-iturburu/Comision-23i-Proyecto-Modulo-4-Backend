@@ -5,8 +5,7 @@ import jwt from 'jsonwebtoken';
 import { TOKEN_SECRET } from '../config.js';
 import { LOGIN_ADMIN_TOKEN } from '../config.js';
 import { LOGIN_USER_TOKEN } from '../config.js';
-import {validateCreateUser,
-        validateUpdateUser,
+import {validateUpdateUser,
         validateUpdatePassword, validateEmail, validatePassword,validateUsername} 
 from '../helpers/userValidations.js';
 
@@ -34,27 +33,21 @@ export const getAllUsers = async (req,res) => {
 export const createUser = async (req,res) =>{
     const {username,password,email}  = req.body;
 
-    let error = validateCreateUser({
-            username:username,
-            password:password,
-            email:email
-        });
-
         let errorUsername = validateUsername({username:username})
-        let errorPassword = validatePassword({password:password})
         let errorEmail = validateEmail({email:email})
+        let errorPassword = validatePassword({password:password})
 
     if(errorUsername || errorPassword || errorEmail) {
-        return res.status(400).json({message:error.details[0].message});
+        return res.status(400).json({message: errorUsername ?? errorEmail ?? errorPassword});
     }
         try{
             const emailFound = await User.findOne({ email: email});
             if (emailFound){
-                return res.status(400).json({message: 'Email ya registrado'})
+                return res.status(400).json({message: 'El email ingresado ya esta registrado.'})
             } 
             const usernameFound = await User.findOne({ username: username });
                 if (usernameFound){
-                    return res.status(401).json({message: 'Username ya registrado'})
+                    return res.status(400).json({message: 'El nombre de usuario ingresado ya esta registrado.'})
                 } 
     
             const salt = await bcrypt.genSalt(10);
@@ -66,9 +59,6 @@ export const createUser = async (req,res) =>{
         }catch(error){
             return res.status(500).json({message:error.message});    
         }
-
-    
-
 }
  
 export const getMyUser = async (req,res) =>{
@@ -114,9 +104,9 @@ export const login = async (req,res) => {
 }
 
 export const updateUsername = async (req,res) => {
-    let {username} = req.body;
+    let {username, password} = req.body;
     let {userId} = req.userToken;
-    let error = validateUpdateUser({
+    let error = validateUsername({
         username:username,
     });
 
@@ -133,10 +123,16 @@ export const updateUsername = async (req,res) => {
     });
 
     if(usernameExists){
-        return res.status(400).json({ error: 'El username ya esta en uso' })
+        return res.status(400).json({ error: 'El nombre de usuario ingresado ya esta en uso' })
     }
 
     let userUpdated = await User.findById(userId);
+    const validPassword = await bcrypt.compare(password, userUpdated.password);
+
+    if(!validPassword){
+        return res.status(400).json({error: 'La contraseña ingresada es incorrecta'})
+    }
+
     userUpdated.username = username;
     await userUpdated.save();
     res.json(userUpdated);
@@ -155,11 +151,14 @@ export const updateUserPassword = async (req,res) => {
     const validPassword = await bcrypt.compare(oldPassword, userUpdated.password);
 
     if (!validPassword){
-        return res.status(400).json({ error: 'Contraseña antigua incorrecta' })
+        return res.status(400).json({ error: 'Su contraseña actual no coincide.' })
     } 
 
-    let error = validateUpdatePassword({
-        password:password
+    if (oldPassword == newPassword) {
+        return res.status(400).json({error: 'Su nueva contraseña coincide con la contraseña actual.'})
+    }
+    let error = validatePassword({
+        password:newPassword
     });
 
     if(error) {
