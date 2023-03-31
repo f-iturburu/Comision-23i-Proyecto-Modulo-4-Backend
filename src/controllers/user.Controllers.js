@@ -134,14 +134,14 @@ export const updateUsername = async (req,res) => {
     });
 
     if(usernameExists){
-        return res.status(400).json({ error: 'El nombre de usuario ingresado ya esta en uso' })
+        return res.status(401).json({ error: 'El nombre de usuario ingresado ya registrado' })
     }
 
     let userUpdated = await User.findById(userId);
     const validPassword = await bcrypt.compare(password, userUpdated.password);
 
     if(!validPassword){
-        return res.status(400).json({error: 'La contraseña ingresada es incorrecta'})
+        return res.status(401).json({error: 'La contraseña ingresada es incorrecta'})
     }
 
     userUpdated.username = username;
@@ -162,11 +162,11 @@ export const updateUserPassword = async (req,res) => {
     const validPassword = await bcrypt.compare(oldPassword, userUpdated.password);
 
     if (!validPassword){
-        return res.status(400).json({ error: 'Su contraseña actual no coincide.' })
+        return res.status(401).json({ error: 'La contraseña actual ingresada es incorrecta.' })
     } 
 
     if (oldPassword == newPassword) {
-        return res.status(400).json({error: 'Su nueva contraseña coincide con la contraseña actual.'})
+        return res.status(401).json({error: 'Su nueva contraseña coincide con la contraseña actual.'})
     }
     let error = validatePassword({
         password:newPassword
