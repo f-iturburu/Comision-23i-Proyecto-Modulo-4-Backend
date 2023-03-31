@@ -101,7 +101,7 @@ export const getSurveyById = async (req,res) =>{
         return res.status(500).json({message:error.message});    
     }
 }
-// !EXCLUSIVA DEL USER ADMIN
+
 export const getAllSurveys = async (req,res) => {
     let {userRole} = req.userToken;
     try{
@@ -115,9 +115,6 @@ export const getAllSurveys = async (req,res) => {
             let surveysAuthorID = await User.findById(surveys[i].idAuthor);
            surveys[i].authorEmail = surveysAuthorID.email
         }
-        
-        console.log(surveys);
-;
         res.json(surveys);
     }
     catch(error)
