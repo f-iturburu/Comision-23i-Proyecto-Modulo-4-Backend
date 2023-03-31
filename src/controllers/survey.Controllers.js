@@ -103,16 +103,21 @@ export const getSurveyById = async (req,res) =>{
 }
 // !EXCLUSIVA DEL USER ADMIN
 export const getAllSurveys = async (req,res) => {
-
     let {userRole} = req.userToken;
-
     try{
         const surveys = await Survey.find();
 
         if(userRole !== 0){
             return res.status(403).json({message:'permission denied'}); 
         }
+
+        for (let i = 0; i < surveys.length; i++) {
+            let surveysAuthorID = await User.findById(surveys[i].idAuthor);
+           surveys[i].authorEmail = surveysAuthorID.email
+        }
         
+        console.log(surveys);
+;
         res.json(surveys);
     }
     catch(error)
