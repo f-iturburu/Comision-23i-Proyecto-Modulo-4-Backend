@@ -1,5 +1,6 @@
 import Survey from '../database/models/survey.Model.js';
 import User from '../database/models/user.Model.js';
+import moment from 'moment-timezone';
 
 
 export const createSurveyWithQuestions = async (req,res) => {
@@ -129,7 +130,7 @@ export const getAllSurveysActive = async (req, res) =>{
             published: true,
             $or: [
                 { endDate: { $exists: false } },
-                { endDate: { $gt: Date.now() } },
+                { endDate: { $gte: moment.utc().startOf('day').toDate() } },
                 { endDate: null}
             ]
         };
