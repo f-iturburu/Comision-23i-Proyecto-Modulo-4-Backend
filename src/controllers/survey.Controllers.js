@@ -150,7 +150,7 @@ export const getAllSurveysActive = async (req, res) =>{
                 description: survey.description, 
                 endDate: survey.endDate,
                 categories: survey.categories,
-                publishedDate: survey.createdAt
+                createdAt: survey.createdAt
             }
         }));
     }
