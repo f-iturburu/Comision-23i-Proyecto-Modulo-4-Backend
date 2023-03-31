@@ -22,6 +22,7 @@ const survey = new Schema({
   surveyQuestions:[question],
   categories: Array,
   idAuthor : String,
+  authorEmail: String,
   endDate: Date,
 },{
     timestamps:true
