@@ -133,7 +133,7 @@ export const getAllSurveysActive = async (req, res) =>{
                 { endDate: null}
             ]
         };
-        
+
         if (categories.length > 0) {
             query.categories = { $in: categories };
         } 
@@ -147,6 +147,7 @@ export const getAllSurveysActive = async (req, res) =>{
                 description: survey.description, 
                 endDate: survey.endDate,
                 categories: survey.categories,
+                publishedDate: survey.createdAt
             }
         }));
     }
