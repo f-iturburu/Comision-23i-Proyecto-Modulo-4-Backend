@@ -134,7 +134,7 @@ export const updateUsername = async (req,res) => {
     });
 
     if(usernameExists){
-        return res.status(401).json({ error: 'El nombre de usuario ingresado ya registrado' })
+        return res.status(401).json({ error: 'El nombre de usuario ingresado ya esta registrado' })
     }
 
     let userUpdated = await User.findById(userId);
