@@ -1,12 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="./main.css" />
+    <link rel="stylesheet" type="text/css" href="./simple_console.css" />
+    <title>Backend Rolling Surveys C23i</title>
+  </head>
+  <body>
+    <!--
+			Press 'f' to toggle fullscreen
+		-->
+    <main class="invisible">
+      <div>Backend Rolling Surveys C23i</div>
+    </main>
+
+    <pre aria-hidden="true"></pre>
+    <script src="./index.js"></script>
+    <script>
+      // Parse location
+      const url = new URL(location);
+      const src = url.searchParams;
+      // if mode is set to 'screensaver' the navigation will be hidden
+      const mode = (src.get("mode") || "").toLowerCase();
+      // color can be set to 'true' for color cycle,
+      // or 'white' for full contrast;
+      // othewrise gray is used
+      const color = (src.get("color") || "").toLowerCase();
+      // word can be any alphanumeirc string, but must be of length 3
+      // othwerwise a randomised internal dict will be used
+      const word = (url.hash.substr(1) || src.get("word") || "").toLowerCase();
+
+      // Boot
+      ertdfgcvb.boot({ word, mode, color });
+      function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * i);
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+      }
+    </script>
+  </body>
 </html>
