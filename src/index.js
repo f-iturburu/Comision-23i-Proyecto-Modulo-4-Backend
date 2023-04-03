@@ -4,11 +4,13 @@ import {ADMIN_EMAIL, ADMIN_PASS, ADMIN_USER, PORT} from './config.js';
 import bcrypt from 'bcrypt'
 import express from 'express';
 import path from 'path';
-
-
-//export Models
+import { fileURLToPath } from 'url';
 import User from './database/models/user.Model.js';
 import Survey from './database/models/survey.Model.js';
+
+const __filename = fileURLToPath(import.meta.url);
+
+const __dirname = path.dirname(__filename);
 
 
 
@@ -34,4 +36,5 @@ app.listen(PORT, async () => {
     }
 });
 
-app.use(express.static('public'))
+app.use(express.static(path.join(__dirname, '/public')));
+
