@@ -2,6 +2,8 @@ import app from './app.js';
 import './database/db.js';
 import {ADMIN_EMAIL, ADMIN_PASS, ADMIN_USER, PORT} from './config.js';
 import bcrypt from 'bcrypt'
+import express from 'express';
+import path from 'path';
 
 
 //export Models
@@ -18,7 +20,6 @@ app.listen(PORT, async () => {
         {
             const salt = await bcrypt.genSalt(10);
             const passwordHashed = await bcrypt.hash(ADMIN_PASS, salt);
-            console.log("--> Seeding User Admin");
             User.create(
                 {
                  username:ADMIN_USER,
@@ -33,3 +34,4 @@ app.listen(PORT, async () => {
     }
 });
 
+app.use(express.static('public'))
