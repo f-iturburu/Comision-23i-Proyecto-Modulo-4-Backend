@@ -9,10 +9,7 @@ import User from './database/models/user.Model.js';
 import Survey from './database/models/survey.Model.js';
 
 const __filename = fileURLToPath(import.meta.url);
-
 const __dirname = path.dirname(__filename);
-
-
 
 app.listen(PORT, async () => {
     console.log(`La app esta escuchando en el puerto: ${PORT}`);
@@ -36,5 +33,6 @@ app.listen(PORT, async () => {
     }
 });
 
-app.use(express.static(path.join(__dirname, '/public')));
+
+app.use(express.static(path.join(__dirname, '../public')));
 
