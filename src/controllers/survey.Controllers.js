@@ -172,6 +172,7 @@ export const getAllMySurveys = async (req, res) =>{
                      categories: survey.categories,
                      createDate: survey.createdAt,
                      endDate: survey.endDate,
+                     surveyQuestions: survey.surveyQuestions
                    }
         });
 
