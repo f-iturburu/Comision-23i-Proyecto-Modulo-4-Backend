@@ -248,6 +248,36 @@ export const updateSurveyPublished = async (req,res) => {
     }
 }
 
+export const updateSurvey = async (req,res) =>{
+    let {id} = req.params;
+    let {userId, userRole} = req.userToken;
+    let {name, description,categories} = req.body;
+    try{
+        const surveyById = await Survey.findById(id);
+
+        if(!surveyById){
+            return res.status(400).json({message:'no existe'});
+        }
+
+        if(userId != surveyById.idAuthor && userRole !== 0){
+            return res.status(403).json({message:'permission denied'}); 
+        }
+
+        surveyById.name = name;
+        surveyById.description = description;
+        surveyById.categories = categories;
+
+        await surveyById.save();
+
+        res.json({
+            _id : surveyById._id,
+        })
+    }
+    catch(error){
+        return res.status(500).json({message:error.message});
+    } 
+}
+
 export const deleteSurvey = async (req,res) =>{
  let {userId,userRole} = req.userToken
  let {id} = req.params;

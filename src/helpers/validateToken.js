@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { TOKEN_SECRET } from '../config.js';
 
-// middleware to validate token (rutas protegidas)
 export const verifyToken = (req, res, next) => {
     const token = req.header('auth-token')
     if (!token) return res.status(401).json({ error: 'Acceso denegado' })
@@ -10,6 +9,6 @@ export const verifyToken = (req, res, next) => {
         req.userToken = verified
         next()
     } catch (error) {
-        res.status(400).json({error: 'token no es válido'})
+        res.status(400).json({error: 'token invalido'})
     }
 }

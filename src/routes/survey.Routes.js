@@ -7,6 +7,7 @@ import {
     getAllSurveysActive,
     createSurveyWithQuestions,
     updateSurveyPublished,
+    updateSurvey,
     deleteSurvey
 
 } from "../controllers/survey.Controllers.js";
@@ -21,7 +22,9 @@ router.get("/survey/:id/answers/me", verifyToken, getSurveyByIdWithMyAnswers);
 
 router.post("/surveys/active", getAllSurveysActive)
 router.post("/survey/question", verifyToken, createSurveyWithQuestions)
+
 router.patch("/survey/:id/published", verifyToken, updateSurveyPublished)
+router.patch("/survey/:id", verifyToken, updateSurvey)
 
 router.delete("/survey/:id", verifyToken, deleteSurvey)
 
