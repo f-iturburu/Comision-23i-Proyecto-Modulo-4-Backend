@@ -47,11 +47,9 @@ export const createUser = async (req, res) => {
     }
     const usernameFound = await User.findOne({ username: username });
     if (usernameFound) {
-      return res
-        .status(400)
-        .json({
-          message: "El nombre de usuario ingresado ya esta registrado.",
-        });
+      return res.status(400).json({
+        message: "El nombre de usuario ingresado ya esta registrado.",
+      });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -79,7 +77,7 @@ export const createUser = async (req, res) => {
       TOKEN_SECRET
     );
 
-    res.status(201).json({ token: token, role: roleToken });
+    res.status(201).json({ token: token, role: roleToken, username: newUser.username});
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -129,7 +127,7 @@ export const login = async (req, res) => {
     TOKEN_SECRET
   );
 
-  res.json({ token: token, role: roleToken });
+  res.json({ token: token, role: roleToken,username: userLogin.username });
 };
 
 export const updateUsername = async (req, res) => {
@@ -147,11 +145,9 @@ export const updateUsername = async (req, res) => {
     let userUsername = await User.findById(userId);
 
     if (currentUsername.toLowerCase() !== userUsername.username) {
-      return res
-        .status(401)
-        .json({
-          error: "El nombre de usuario actual no coincide con el ingresado",
-        });
+      return res.status(401).json({
+        error: "El nombre de usuario actual no coincide con el ingresado",
+      });
     } else if (userUsername.username == username) {
       return res
         .status(401)
@@ -203,11 +199,9 @@ export const updateUserPassword = async (req, res) => {
     }
 
     if (oldPassword == newPassword) {
-      return res
-        .status(401)
-        .json({
-          error: "Su nueva contraseña coincide con la contraseña actual.",
-        });
+      return res.status(401).json({
+        error: "Su nueva contraseña coincide con la contraseña actual.",
+      });
     }
     let error = validatePassword({
       password: newPassword,
