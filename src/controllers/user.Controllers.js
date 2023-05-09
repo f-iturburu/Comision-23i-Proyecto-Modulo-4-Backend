@@ -133,6 +133,7 @@ export const login = async (req, res) => {
 export const updateUsername = async (req, res) => {
   let { currentUsername, username, password } = req.body;
   let { userId } = req.userToken;
+  
   let error = validateUsername({
     username: username,
   });
