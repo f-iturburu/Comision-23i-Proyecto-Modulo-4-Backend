@@ -1,8 +1,5 @@
 import Survey from '../database/models/survey.Model.js'
 
-
-
-
 export const createAllAnswers = async (req,res) => {
     let {userAnswers,isAnonymous} = req.body;
     let {userId} = req.userToken;
